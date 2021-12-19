@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: smartex_backend
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=dev.smartex.ai
+      - MONGODB_HOST=dev.smartex.ai
+      - REDIS_HOST=dev.smartex.ai
+      - NODE_ENV=production
+    ports:
+      - 3334:3333
+    restart: always

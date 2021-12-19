@@ -1,0 +1,8 @@
+*
+!src/
+!views/
+!worker/
+!package.json
+!package-lock.json
+!peerbits-ams-backend.json
+!tsconfig.json

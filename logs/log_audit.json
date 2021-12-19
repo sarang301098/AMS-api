@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "logs/log_audit.json",
+    "files": [
+        {
+            "date": 1639895931125,
+            "name": "logs\\PEERBITS-2021-12-19.log",
+            "hash": "eef82fb31b3154894261ed30527cb6f8"
+        }
+    ]
+}
