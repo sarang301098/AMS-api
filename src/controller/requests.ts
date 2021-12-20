@@ -1,4 +1,4 @@
-import { getConnection, FindConditions } from 'typeorm';
+import { getConnection, FindConditions, In } from 'typeorm';
 import { Request, Response } from 'express';
 import { Joi } from 'express-validation';
 import * as _ from 'lodash';
@@ -85,14 +85,14 @@ export const getAdminRequestList = () => async (req: Request, res: Response): Pr
 
   if (userName && userName !== '') {
     const userData = await usersRepo.find({
-      where: { type: 'user', username: new RegExp(userName, 'ig') },
+      where: { type: 'user' }, // username: new RegExp(userName, 'ig')
       select: ['username'],
     });
 
     if (userData && userData.length) {
       userIds = [...new Set((userData || []).map((obj) => obj?._id.toString()))]; // (uniqBy(data, '_id') || []).map((userData) => userData?._id.toString());
     }
-    where = { ...where, fromUserId: { $in: userIds } };
+    where = { ...where, fromUserId: In(userIds || []) };
   }
 
   if (status && status !== 'all') {

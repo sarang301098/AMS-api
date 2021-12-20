@@ -98,8 +98,8 @@ export const createpurchaseEntry = () => async (req: Request, res: Response): Pr
         while (i < purchaseEntry?.units) {
           let inventoryDetail = inventoryDetailRepo.create({
             label: generateInventoryLabel(
-              brand?.name,
-              model?.name,
+              brand?.name || '',
+              model?.name || '',
               Number(inventoryDetailCount + i + 1),
             ),
             inventoryId: (availableInventory?._id).toString(),
@@ -134,7 +134,7 @@ export const getPurchaseAllValidation = {
 };
 export const getPurchaseAll = () => async (req: Request, res: Response): Promise<void> => {
   const {
-    query: { page, perPage, sort, sortBy, inventoryName },
+    query: { page, perPage, sort, sortBy },
   } = req;
 
   const mongoConn = getConnection('mongodb');
@@ -142,11 +142,11 @@ export const getPurchaseAll = () => async (req: Request, res: Response): Promise
 
   const limit = Number(perPage);
   const offset = (Number(page) - 1) * limit;
-  let where: FindConditions<PurchaseEntry> = {};
+  const where: FindConditions<PurchaseEntry> = {};
 
-  if (inventoryName && inventoryName !== '') {
-    where = { ...where, inventoryName: new RegExp(inventoryName as string, 'ig') };
-  }
+  // if (inventoryName && inventoryName !== '') {
+  //   where = { ...where, inventoryName: new RegExp(inventoryName as string, 'ig') };
+  // }
 
   const [purchaseEntries, count] = await purchaseEntryRepo.findAndCount({
     where,
