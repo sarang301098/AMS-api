@@ -53,11 +53,7 @@ export const getAssignInventoryByUserId = () => async (
     assignmentDetailsCount,
   ] = await inventoryAssignedDetailRepo.findAndCount({
     where: {
-      createdAt: Between(new Date(startDate), new Date(endDate)),
-      // createdAt: {
-      //   $gte: new Date(),
-      //   $lte: new Date(),
-      // },
+      createdAt: Between(startDate, endDate),
     },
     ...filterObject,
   });

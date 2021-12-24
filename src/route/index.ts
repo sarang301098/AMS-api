@@ -12,7 +12,6 @@ import inventoryNames from './inventoryNames';
 import notications from './notications';
 import purchaseEntry from './purchaseEntry';
 import inventories from './inventories';
-import availableInventory from './availableInventory';
 
 const routes = Router();
 
@@ -30,6 +29,5 @@ routes.use('/inventoryName', inventoryNames());
 routes.use('/notification', notications());
 routes.use('/purchaseEntry', purchaseEntry());
 routes.use('/inventory', inventories());
-routes.use('/availableInventory', availableInventory());
 
 export default (): Router => routes;

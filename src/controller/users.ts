@@ -1,4 +1,4 @@
-import { getCustomRepository, getConnection, FindConditions } from 'typeorm';
+import { getCustomRepository, getConnection, FindConditions, In } from 'typeorm';
 import { Request, Response } from 'express';
 import { Joi } from 'express-validation';
 import { generateRandomHex } from '../service/random';
@@ -14,8 +14,65 @@ import { UserType } from '../constants';
 import { Users as MongoUsers } from '../model/mongo/users';
 import { ObjectId } from 'mongodb';
 
-const namePattern = '^[A-za-z]';
+export const getUsersValidation = {
+  query: Joi.object({
+    q: Joi.string().max(50),
+    type: Joi.alternatives(
+      Joi.array()
+        .items(Joi.string().valid(...Object.values(UserType)))
+        .default(null),
+      Joi.string()
+        .valid(...Object.values(UserType))
+        .default(null),
+    ),
+    email: Joi.string().max(255).lowercase().email().default(null),
+    page: Joi.number().integer().min(1).default(1),
+    perPage: Joi.number().integer().min(1).max(40).default(20),
+    sort: Joi.string().valid('ASC', 'DESC').default('DESC'),
+    sortBy: Joi.string()
+      .valid('name', 'email', 'status', 'type', 'createdAt', 'updatedAt')
+      .default('createdAt'),
+  }),
+};
+export const getAll = () => async (req: Request, res: Response): Promise<void> => {
+  const { q, type, email, page, perPage, sort, sortBy } = req.query;
 
+  const mongoConn = getConnection('mongodb');
+  const usersRepository = mongoConn.getCustomRepository(UsersRepository);
+
+  let where: FindConditions<MongoUsers> = {};
+
+  if (q) {
+    where = { ...where, name: `${q}` };
+  }
+
+  if (type) {
+    if (!Array.isArray(type)) {
+      where = { ...where, type: type as string };
+    } else {
+      where = { ...where, type: In(type as string[]) };
+    }
+  }
+
+  if (email) {
+    where = { ...where, email: email as string };
+  }
+
+  const limit = Number(perPage);
+  const offset = (Number(page) - 1) * limit;
+
+  const [users, count] = await usersRepository.findAndCount({
+    where,
+    take: limit,
+    skip: offset,
+    order: { [sortBy as string]: sort },
+  });
+
+  res.status(200).json({ count, users });
+};
+
+const namePattern = '^[A-za-z]';
+// Create New User with User Type
 export const createUserValidation = {
   body: Joi.object({
     username: Joi.string().max(255).required(),
@@ -76,7 +133,7 @@ export const avatar = () => async (req: Request, res: Response): Promise<void> =
   // await usersRepo.updateAvatar(user, getRelativePath(Media.USER, filename));
   // TODO: Give proper type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await usersRepo.updateAvatar(user, (<any>file).location);
+  // await usersRepo.updateAvatar(user, (<any>file).location);
   await user.reload();
 
   res.status(200).json(user);
@@ -98,7 +155,7 @@ export const changePassword = () => async (req: Request, res: Response): Promise
   const mongoConn = getConnection('mongodb');
   const usersRepo = mongoConn.getMongoRepository(MongoUsers);
 
-  const userWithPassword = await usersRepo.findOneOrFail({ id: user.id });
+  const userWithPassword = await usersRepo.findOneOrFail({ where: { id: user.id } });
 
   if (!userWithPassword.password) {
     throw new UnauthorizedError();
@@ -279,14 +336,17 @@ export const getAllUsersByAdmin = () => async (req: Request, res: Response): Pro
   const limit = Number(perPage);
   const offset = (Number(page) - 1) * limit;
 
-  let where: FindConditions<MongoUsers> = { type: 'user' };
+  // let where: FindConditions<MongoUsers>;
 
-  if (name && name !== '') {
-    where = { ...where, username: new RegExp(name, 'ig') };
-  }
+  // if (name && name !== '') {
+  //   where = { ...where, username: { $regex: name} ;
+  // }
 
   const [totalUsers, totalUsersCount] = await usersRepo.findAndCount({
-    where,
+    where: {
+      username: { $regex: name },
+      type: 'user',
+    },
     take: limit,
     skip: offset,
     order: { [sortBy as string]: sort },

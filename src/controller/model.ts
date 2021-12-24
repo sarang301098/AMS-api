@@ -15,7 +15,7 @@ type Options = {
 
 export const getModelOptionsValidation = {
   query: Joi.object({
-    brandId: Joi.string().required().allow(null),
+    brandId: Joi.string().required(),
   }),
 };
 export const getModelOptions = () => async (req: Request, res: Response): Promise<void> => {
@@ -26,13 +26,7 @@ export const getModelOptions = () => async (req: Request, res: Response): Promis
   const mongoConn = getConnection('mongodb');
   const modelRepo = mongoConn.getMongoRepository(MongoModelDetail);
 
-  let where: FindConditions<MongoModelDetail> = {};
-
-  if (brandId) {
-    where = { ...where, brandId };
-  }
-
-  const [modelOptions, modelOptionsCount] = await modelRepo.findAndCount({ where });
+  const [modelOptions, modelOptionsCount] = await modelRepo.findAndCount({ where: { brandId } });
   let UpdatedModelOptions: Array<Options> = [];
 
   if (modelOptions && modelOptionsCount) {
