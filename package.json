@@ -8,9 +8,9 @@
     "node": ">=14.17.0 <17"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "tsc",
     "postinstall": "npm run build",
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "stop": "pm2 stop peerbits-ams-backend.json",
     "restart": "pm2 startOrRestart peerbits-ams-backend.json --update-env",
     "reload": "pm2 startOrReload peerbits-ams-backend.json --update-env",
