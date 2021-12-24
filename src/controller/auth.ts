@@ -23,9 +23,10 @@ export const loginValidation = {
     password: Joi.string().required(),
   }),
 };
-
 export const login = () => async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body || {};
+  const {
+    body: { email, password },
+  } = req;
   const mongoConn = getConnection('mongodb');
   const usersRepo = mongoConn.getMongoRepository(MongoUsers);
 
@@ -109,8 +110,6 @@ export const refreshToken = () => async (req: Request, res: Response): Promise<v
 
   // TODO: This may defer from token expiry
   const expiresIn = config.ACCESS_TOKEN_LIFETIME_MIN * 60;
-
-  await usersRepo.updateLastLogin(user.id);
 
   const cookieOptions: CookieOptions = {
     maxAge: expiresIn * 1000,

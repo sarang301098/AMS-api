@@ -1,7 +1,6 @@
-import { getConnection } from 'typeorm';
+import { Between, getConnection } from 'typeorm';
 import { Request, Response } from 'express';
 import { Joi } from 'express-validation';
-import moment from 'moment';
 
 import { ObjectID } from 'mongodb';
 
@@ -14,8 +13,8 @@ import { InventoryDetail as MongoInventoryDetail } from '../model/mongo/Inventor
 
 export const getAssignInventoryByUserIdValidation = {
   query: Joi.object({
-    startDate: Joi.string().required(),
-    endDate: Joi.string().required(),
+    startDate: Joi.string().default(new Date()),
+    endDate: Joi.string().default(new Date()),
     page: Joi.number().integer().min(1),
     perPage: Joi.number().integer().min(1).max(40),
     isPaginate: Joi.boolean().default(false),
@@ -54,10 +53,7 @@ export const getAssignInventoryByUserId = () => async (
     assignmentDetailsCount,
   ] = await inventoryAssignedDetailRepo.findAndCount({
     where: {
-      createdAt: {
-        $gte: moment(startDate || '').toDate(),
-        $lte: moment(endDate || '').toDate(),
-      },
+      createdAt: Between(startDate, endDate),
     },
     ...filterObject,
   });

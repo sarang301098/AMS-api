@@ -195,7 +195,7 @@ export const AssignInventoryNew = () => async (req: Request, res: Response): Pro
 
     if (!assignInventoryObject?.inventoryName) {
       userData?.assignedInventory.push({
-        inventoryName: inventoryMasterData?.inventoryName,
+        inventoryName: inventoryMasterData?.inventoryName || '',
         inventoryDetailId: (inventoryDetailData?._id).toString(),
       });
       await usersRepo.save(userData || {});

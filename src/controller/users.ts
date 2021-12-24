@@ -133,7 +133,7 @@ export const avatar = () => async (req: Request, res: Response): Promise<void> =
   // await usersRepo.updateAvatar(user, getRelativePath(Media.USER, filename));
   // TODO: Give proper type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await usersRepo.updateAvatar(user, (<any>file).location);
+  // await usersRepo.updateAvatar(user, (<any>file).location);
   await user.reload();
 
   res.status(200).json(user);
@@ -155,7 +155,7 @@ export const changePassword = () => async (req: Request, res: Response): Promise
   const mongoConn = getConnection('mongodb');
   const usersRepo = mongoConn.getMongoRepository(MongoUsers);
 
-  const userWithPassword = await usersRepo.findOneOrFail({ id: user.id });
+  const userWithPassword = await usersRepo.findOneOrFail({ where: { id: user.id } });
 
   if (!userWithPassword.password) {
     throw new UnauthorizedError();
@@ -336,14 +336,17 @@ export const getAllUsersByAdmin = () => async (req: Request, res: Response): Pro
   const limit = Number(perPage);
   const offset = (Number(page) - 1) * limit;
 
-  let where: FindConditions<MongoUsers> = { type: 'user' };
+  // let where: FindConditions<MongoUsers>;
 
-  if (name && name !== '') {
-    where = { ...where, username: new RegExp(name, 'ig') };
-  }
+  // if (name && name !== '') {
+  //   where = { ...where, username: { $regex: name} ;
+  // }
 
   const [totalUsers, totalUsersCount] = await usersRepo.findAndCount({
-    where,
+    where: {
+      username: { $regex: name },
+      type: 'user',
+    },
     take: limit,
     skip: offset,
     order: { [sortBy as string]: sort },

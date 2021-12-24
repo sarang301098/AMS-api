@@ -9,11 +9,9 @@ import {
   changePasswordValidation,
   createUser,
   createUserValidation,
-  getAll,
   getById,
   forgetPasswordValidation,
   forgetPassword,
-  getUsersValidation,
   getUserValidation,
   profile,
   updateProfile,
@@ -30,14 +28,6 @@ import {
 } from '../controller/users';
 
 const router = Router();
-
-const getUsers = (): Router =>
-  router.get(
-    '/',
-    authenticate,
-    validate(getUsersValidation, { context: true }),
-    handleError(getAll()),
-  );
 
 const postCreateUser = (): Router =>
   router.post('/', validate(createUserValidation, { context: true }), handleError(createUser()));
@@ -119,7 +109,6 @@ const postUserByAdmin = (): Router =>
 
 export default (): Router =>
   router.use([
-    getUsers(),
     postCreateUser(),
     patchAvatar(),
     patchChangePassword(),
