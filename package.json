@@ -8,7 +8,7 @@
     "node": ">=14.17.0 <17"
   },
   "scripts": {
-    "start": "pm2 start peerbits-ams-backend.json",
+    "start": "nodemon",
     "stop": "pm2 stop peerbits-ams-backend.json",
     "restart": "pm2 startOrRestart peerbits-ams-backend.json --update-env",
     "reload": "pm2 startOrReload peerbits-ams-backend.json --update-env",
