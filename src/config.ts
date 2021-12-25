@@ -107,7 +107,6 @@ type Environment = {
   MONGODB_PASSWORD: string;
   MONGODB_DATABASE: string;
   MONGODB_PORT: number;
-  SLACK_WEBHOOK: string | undefined;
   REDIS_HOST: string;
   REDIS_PORT: number;
   CACHE_DURATION_IN_MS: number;
@@ -212,7 +211,6 @@ const env: Env = cleanEnv<Environment>(process.env, {
   MONGODB_PASSWORD: str(),
   MONGODB_DATABASE: str({ default: 'peerbits' }),
   MONGODB_PORT: port({ default: 3333 }),
-  SLACK_WEBHOOK: url({ default: undefined }),
   REDIS_HOST: str({ default: '127.0.0.1' }),
   REDIS_PORT: port({ default: 6379 }),
   CACHE_DURATION_IN_MS: num({ default: 1000 * 7 }),

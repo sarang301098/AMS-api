@@ -1,24 +1,29 @@
 {
-    "keep": {
-        "days": true,
-        "amount": 7
+  "keep": {
+    "days": true,
+    "amount": 7
+  },
+  "auditLog": "logs/log_audit.json",
+  "files": [
+    {
+      "date": 1639895931125,
+      "name": "logs\\PEERBITS-2021-12-19.log",
+      "hash": "eef82fb31b3154894261ed30527cb6f8"
     },
-    "auditLog": "logs/log_audit.json",
-    "files": [
-        {
-            "date": 1639895931125,
-            "name": "logs\\PEERBITS-2021-12-19.log",
-            "hash": "eef82fb31b3154894261ed30527cb6f8"
-        },
-        {
-            "date": 1640018680526,
-            "name": "logs\\PEERBITS-2021-12-20.log",
-            "hash": "fa8cf2fade4c7fb6002a459cb8e04d18"
-        },
-        {
-            "date": 1640362553699,
-            "name": "logs\\PEERBITS-2021-12-24.log",
-            "hash": "db02c1081ff3c654a424e795180e18ce"
-        }
-    ]
+    {
+      "date": 1640018680526,
+      "name": "logs\\PEERBITS-2021-12-20.log",
+      "hash": "fa8cf2fade4c7fb6002a459cb8e04d18"
+    },
+    {
+      "date": 1640362553699,
+      "name": "logs\\PEERBITS-2021-12-24.log",
+      "hash": "db02c1081ff3c654a424e795180e18ce"
+    },
+    {
+      "date": 1640411252810,
+      "name": "logs\\PEERBITS-2021-12-25.log",
+      "hash": "a4d4640ddacc339f38c559e075efdfb1"
+    }
+  ]
 }

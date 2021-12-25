@@ -1,6 +1,5 @@
 import WinstonDailyRotateFile from 'winston-daily-rotate-file';
 import { createLogger, format, transports } from 'winston';
-import SlackHook from 'winston-slack-webhook-transport';
 
 import config from '../config';
 
@@ -47,38 +46,6 @@ if (config.isDev || config.isProd) {
       maxFiles: '7d',
       auditFile: 'logs/log_audit.json',
       format: format.combine(format.uncolorize({ raw: true }), logFormat),
-    }),
-  );
-}
-
-if (config.isProd && config.SLACK_WEBHOOK) {
-  logger.add(
-    new SlackHook({
-      webhookUrl: config.SLACK_WEBHOOK,
-      level: LogLevel.INFO,
-      formatter: ({ message, level }): Record<string, unknown> => {
-        return {
-          text: `[${level}]`,
-          attachment: [],
-          blocks: [
-            { type: 'divider' },
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `*${level.toUpperCase()}:*`,
-              },
-            },
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `\`\`\`${scrubPasswords(message)}\`\`\``,
-              },
-            },
-          ],
-        };
-      },
     }),
   );
 }
