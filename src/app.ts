@@ -29,16 +29,14 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: '*', // later restricted
-    credentials: true,
-  }),
-);
+app.use(cors());
 
 app.use(compression());
+
 // TODO: Only apply to long request
 app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.setTimeout(config.GLOBAL_REQUEST_TIMEOUT_IN_MS, () =>
     next(new RequestTimeoutError(`Request timeout for: [${req.method}] ${req.originalUrl}`)),
   );

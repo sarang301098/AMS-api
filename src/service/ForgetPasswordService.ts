@@ -70,14 +70,14 @@ class ForgetPasswordService {
 
   private getForgetPasswordLink(emailId: string) {
     const token = randtoken.uid(16);
-    const link = `http://localhost:3000/reset-Password?email=${emailId}&token=${token}`; // url might be differ
+    const link = `http://amsapp.sarangpatel.live/reset-Password?email=${emailId}&token=${token}`; // url might be differ
     return { link, token };
   }
 
   private async getMailBody(user: MongoUsers, link: string) {
     const mailBody = {
       to: user.email as string,
-      subject: 'Forget Password | Peerbits',
+      subject: 'Forget Password | AMS',
       html: await this.getEmailHtml({
         name: user.username ? user.username : 'Unknown',
         email: user.email ? user.email : '',

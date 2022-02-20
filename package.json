@@ -8,7 +8,9 @@
     "node": ">=14.17.0 <17"
   },
   "scripts": {
-    "start": "pm2 start peerbits-ams-backend.json",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "node dist/server.js",
     "stop": "pm2 stop peerbits-ams-backend.json",
     "restart": "pm2 startOrRestart peerbits-ams-backend.json --update-env",
     "reload": "pm2 startOrReload peerbits-ams-backend.json --update-env",
@@ -34,7 +36,6 @@
     "pretty-quick": "pretty-quick --staged",
     "lint:quick:fix": "npm run eslint:fix && npm run pretty-quick",
     "prebuild": "rimraf dist/*",
-    "build": "tsc",
     "build:check": "tsc --noEmit",
     "preversion": "npm run build:check",
     "version": "standard-version",

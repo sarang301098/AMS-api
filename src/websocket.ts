@@ -35,15 +35,12 @@ export class WebSocketWrapper {
     }
 
     this.wss = new WebSocket.Server({ noServer: true });
-    this.addSubscriberListener();
     this.addWebSocketListener();
 
     WebSocketWrapper.instance = this;
   }
 
   init(): void {
-    const redis = this.getRedisInstance();
-
     this.server.on('upgrade', async (request, socket, head: Buffer) => {
       try {
         const userInfo = await this.authenticate(request);
@@ -52,7 +49,7 @@ export class WebSocketWrapper {
         if (userInfo.machineId && userInfo.machineId !== undefined) {
           key = `${channelType}${userInfo.machineId}`;
         }
-        redis.hset(key, userInfo.userId as string, 'true');
+
         this.wss?.handleUpgrade(request, socket, head, (ws) => {
           this.wss?.emit('connection', ws, request, { ...userInfo, channel: key });
         });
@@ -64,44 +61,7 @@ export class WebSocketWrapper {
     });
   }
 
-  private getSubscriber() {
-    return this.redisService.getSubscriber();
-  }
-
-  private getRedisInstance() {
-    return this.redisService.getInstance();
-  }
-
-  private addSubscriberListener() {
-    const redisSubscriber = this.getSubscriber();
-    const redis = this.getRedisInstance();
-
-    redisSubscriber.psubscribe(`${channelType}*`);
-
-    redisSubscriber.on('pmessage', async (_: string, channel: string, message: string) => {
-      const messsageData = JSON.parse(message);
-      if (messsageData.type === 'goldenStop') {
-        channel = `${channel}Stop:${messsageData.factoryId}`;
-      }
-      const subscribers = await redis.hgetall(channel);
-      const userIds = Object.keys(subscribers);
-      if (userIds && userIds.length) {
-        const payload = JSON.stringify({ channel, data: JSON.parse(message) });
-
-        userIds.forEach((userId) => {
-          const connection = this.connections[userId];
-          if (connection) {
-            const websocket = connection.ws;
-            websocket.send(payload);
-          }
-        });
-      }
-    });
-  }
-
   private addWebSocketListener() {
-    const redis = this.getRedisInstance();
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.wss?.on('connection', (ws: WebSocket, _: any, client: Record<string, string | number>) => {
       const { userId } = client;
@@ -110,12 +70,6 @@ export class WebSocketWrapper {
         ws,
         channel: client.channel as string,
       };
-
-      ws.on('close', async () => {
-        const connection = this.connections[userId];
-        await redis.hdel(connection.channel, userId as string);
-        delete this.connections[userId];
-      });
 
       logger.info(`Socket connection established with user : [${userId}]`);
     });

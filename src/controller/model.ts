@@ -1,4 +1,4 @@
-import { FindConditions, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
 import { Request, Response } from 'express';
 import { Joi } from 'express-validation';
 import { map, uniqBy } from 'lodash';
