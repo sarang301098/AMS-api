@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router } from 'express';
 import { validate } from 'express-validation';
 import { UserType } from '../constants';
@@ -20,8 +19,6 @@ const router = Router();
 const getInventoriesById = (): Router =>
   router.get(
     '/:userId',
-    // authenticate,
-    // checkUserType(UserType.SUPER_ADMIN),
     validate(getInventoryByUserIdValidation, { context: true }),
     handleError(getInventoryByUserId()),
   );

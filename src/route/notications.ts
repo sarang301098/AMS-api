@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router } from 'express';
 import { validate } from 'express-validation';
 import { UserType } from '../constants';
@@ -9,8 +8,6 @@ import {
   getNotificationByNotificationId,
   getNotificationByUserId,
   getNotificationByUserIdValidation,
-  getNotificationByUsersValidation,
-  getNotificationList,
   getNotificationByIdValidation,
   deleteNotificationsValidation,
   deleteNotifications,
@@ -52,14 +49,6 @@ const getNotificationByAdminList = (): Router =>
     validate(getNotificationByAdminValidation, { context: true }),
     handleError(getNotificationByAdmin()),
   );
-// const getAllNotification = (): Router =>
-//   router.get(
-//     '/admin/list',
-//     authenticate,
-//     checkUserType(UserType.SUPER_ADMIN),
-//     validate(getNotificationByUsersValidation, { context: true }),
-//     handleError(deleteNotificationById()),
-//   );
 
 const deleteById = (): Router =>
   router.delete(
@@ -81,7 +70,6 @@ export default (): Router =>
     getNotificationByUsers(),
     getNotificationByAdminList(),
     updateNotificationStatusByIds(),
-    // getAllNotification(),
     getNotificationById(),
     deleteByIds(),
     deleteById(),

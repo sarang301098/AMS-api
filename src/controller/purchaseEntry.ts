@@ -144,10 +144,6 @@ export const getPurchaseAll = () => async (req: Request, res: Response): Promise
   const offset = (Number(page) - 1) * limit;
   const where: FindConditions<PurchaseEntry> = {};
 
-  // if (inventoryName && inventoryName !== '') {
-  //   where = { ...where, inventoryName: new RegExp(inventoryName as string, 'ig') };
-  // }
-
   const [purchaseEntries, count] = await purchaseEntryRepo.findAndCount({
     where,
     take: limit,

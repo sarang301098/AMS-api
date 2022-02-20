@@ -7,8 +7,7 @@ const baseFolder = config.isProd ? 'dist' : 'src';
 const mongoDbTypeormConfig = {
   name: 'mongodb',
   type: 'mongodb',
-  url:
-    'mongodb+srv://root:root@cluster0.sqnju.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  url: 'mongodb+srv://root:root@cluster0.sqnju.mongodb.net/AMS?retryWrites=true&w=majority',
   useNewUrlParser: true,
   synchronize: true,
   logging: true,
