@@ -7,8 +7,11 @@ const baseFolder = config.isProd ? 'dist' : 'src';
 const mongoDbTypeormConfig = {
   name: 'mongodb',
   type: 'mongodb',
-  url: 'mongodb+srv://root:root@cluster0.sqnju.mongodb.net/AMS?retryWrites=true&w=majority',
+  url:
+    'mongodb+srv://sarang_3010:Sarang@30@cluster0.zus57hs.mongodb.net/?retryWrites=true&w=majority',
+  database: 'Ams',
   useNewUrlParser: true,
+  useUnifiedTopology: true,
   synchronize: true,
   logging: true,
   entities: [`${baseFolder}/model/mongo/**/*{.js,.ts}`],

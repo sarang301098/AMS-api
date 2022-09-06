@@ -14,16 +14,6 @@ import * as Sentry from '@sentry/node';
 
 const app = express();
 
-// if (config.SENTRY_DNS && config.isProd) {
-//   Sentry.init({
-//     enabled: config.SENTRY_ENV !== 'local',
-//     dsn: config.SENTRY_DNS,
-//     release: 'smartex-backend@' + process.env.npm_package_version,
-//     environment: config.SENTRY_ENV,
-//   });
-//   app.use(Sentry.Handlers.requestHandler({ ip: true }));
-// }
-
 app.set('port', config.PORT);
 app.use(helmet());
 app.use(cookieParser());

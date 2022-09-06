@@ -1,14 +1,14 @@
 {
-  "keep": {
-    "days": true,
-    "amount": 7
-  },
-  "auditLog": "logs/log_audit.json",
-  "files": [
-    {
-      "date": 1645353489353,
-      "name": "logs\\PEERBITS-2022-02-20.log",
-      "hash": "ebe030f7a1e1505d85f3b4cb72499a8e"
-    }
-  ]
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "logs/log_audit.json",
+    "files": [
+        {
+            "date": 1662492914024,
+            "name": "logs/PEERBITS-2022-09-06.log",
+            "hash": "27b4c97164ada92c4376f095760873cb"
+        }
+    ]
 }
