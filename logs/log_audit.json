@@ -6,9 +6,9 @@
     "auditLog": "logs/log_audit.json",
     "files": [
         {
-            "date": 1662492914024,
-            "name": "logs/PEERBITS-2022-09-06.log",
-            "hash": "27b4c97164ada92c4376f095760873cb"
+            "date": 1671437227184,
+            "name": "logs/PEERBITS-2022-12-19.log",
+            "hash": "d5c63725929dd702e341824908da37d9"
         }
     ]
 }

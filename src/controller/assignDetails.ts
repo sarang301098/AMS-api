@@ -66,7 +66,7 @@ export const getAssignInventoryByUserId = () => async (
           assignmentDetailsData?.inventoryDetailId || '',
         );
 
-        if (inventoryDetailsData && inventoryDetailsData.inventoryId) {
+        if (inventoryDetailsData && inventoryDetailsData?.inventoryId) {
           inventoryMastersData = await inventoryMasterRepo.findOne(
             inventoryDetailsData.inventoryId || '',
           );

@@ -8,6 +8,7 @@ const mongoDbTypeormConfig = {
   name: 'mongodb',
   type: 'mongodb',
   url:
+    'mongodb+srv://sarang_3010:V2XSlxHZVzwtOlMi@cluster0.sxazi.mongodb.net/?retryWrites=true&w=majority' ||
     'mongodb+srv://sarang_3010:Sarang@30@cluster0.zus57hs.mongodb.net/?retryWrites=true&w=majority',
   database: 'Ams',
   useNewUrlParser: true,
